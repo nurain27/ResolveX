@@ -1,0 +1,167 @@
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Poppins',sans-serif;
+}
+
+body{
+    background:#005da8;
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+
+.container{
+    width:1200px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:40px;
+}
+
+.left-panel{
+    color:white;
+    width:45%;
+}
+
+.robot{
+    width:250px;
+    height:auto;
+    margin-bottom:20px;
+}
+
+.left-panel h1{
+    font-size:65px;
+    color:#26f0ff;
+    text-shadow:0 0 10px rgba(0,255,255,.6);
+}
+
+.left-panel h3{
+    letter-spacing:5px;
+    margin-bottom:20px;
+}
+
+.tagline{
+    margin-bottom:25px;
+}
+
+.left-panel ul{
+    list-style:none;
+}
+
+.left-panel ul li{
+    margin-bottom:15px;
+    font-size:22px;
+}
+
+.feature-box{
+    margin-top:40px;
+    border:1px solid rgba(255,255,255,.2);
+    padding:20px;
+    border-radius:10px;
+    width:90%;
+    background:rgba(255,255,255,.05);
+}
+
+.feature-box h4{
+    margin-bottom:10px;
+    font-size:22px;
+}
+
+.right-panel{
+    width:45%;
+}
+
+.top-buttons{
+    display:flex;
+    justify-content:flex-end;
+    gap:15px;
+    margin-bottom:30px;
+}
+
+.signup-btn{
+    background:transparent;
+    border:1px solid white;
+    color:white;
+    padding:10px 25px;
+    border-radius:25px;
+    cursor:pointer;
+}
+
+.admin-btn{
+    background:#0d8cff;
+    border:none;
+    color:white;
+    padding:10px 25px;
+    border-radius:25px;
+    cursor:pointer;
+}
+
+.login-box{
+    background:white;
+    padding:40px;
+    border-radius:10px;
+}
+
+.login-box h2{
+    text-align:center;
+    font-size:38px;
+}
+
+.login-box p{
+    text-align:center;
+    color:gray;
+    margin-bottom:30px;
+}
+
+.login-box label{
+    display:block;
+    margin-bottom:8px;
+    margin-top:15px;
+}
+
+.login-box input{
+    width:100%;
+    padding:14px;
+    border:none;
+    border-radius:8px;
+    background:#f1f1f1;
+}
+
+.password-container{
+    position:relative;
+}
+
+.password-container span{
+    position:absolute;
+    right:15px;
+    top:50%;
+    transform:translateY(-50%);
+    cursor:pointer;
+}
+
+.login-box a{
+    display:block;
+    margin-top:10px;
+    color:gray;
+    text-decoration:none;
+    font-size:14px;
+}
+
+.login-btn{
+    width:100%;
+    margin-top:20px;
+    background:#3f63f0;
+    color:white;
+    border:none;
+    padding:14px;
+    border-radius:8px;
+    font-size:20px;
+    cursor:pointer;
+}
+
+.login-btn:hover{
+    background:#2648d8;
+}
