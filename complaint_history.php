@@ -32,22 +32,26 @@ $total_complaints = mysqli_num_rows($result);
 
         body{
             background:#005da8;
+            overflow: hidden; /* Menghalang scrollbar berganda pada browser */
         }
 
         .container{
             display:flex;
             height:100vh;
+            width: 100vw;
         }
 
-        /* Sidebar */
+        /* Sidebar - Diperbaiki supaya butang logout tidak tenggelam */
         .sidebar{
             width:250px;
             background:#003b8e;
             color:white;
             display:flex;
             flex-direction:column;
-            min-height:100vh;
+            height:100vh; 
             padding:20px;
+            position: relative;
+            flex-shrink: 0; /* Menghalang sidebar daripada mengecil */
         }
 
         .logo{
@@ -89,9 +93,11 @@ $total_complaints = mysqli_num_rows($result);
             background:#2563eb;
         }
 
+        /* Diperbaiki: Memastikan kedudukan butang logout sentiasa di bawah skrin */
         .logout{
-            margin-top:auto;
-            padding-bottom:20px;
+            margin-top: auto; 
+            padding-bottom: 10px;
+            width: 100%;
         }
 
         .logout a{
@@ -102,17 +108,20 @@ $total_complaints = mysqli_num_rows($result);
             text-decoration:none;
             padding:15px;
             border-radius:12px;
+            background: rgba(255, 255, 255, 0.05); /* Memudahkan user nampak butang klik */
+            transition: 0.3s;
         }
 
         .logout a:hover{
-            background:#d9534f; /* Soft red highlighting for destructive action */
+            background:#d9534f !important; 
         }
 
         /* Content */
         .content{
             flex:1;
             padding:20px;
-            overflow-y: auto;
+            height: 100vh;
+            overflow-y: auto; /* Hanya bahagian tabel sahaja yang akan ada scrollbar */
         }
 
         .page-title{
@@ -190,6 +199,7 @@ $total_complaints = mysqli_num_rows($result);
             justify-content:flex-end;
             gap:15px;
             margin-top:20px;
+            padding-bottom: 20px;
         }
 
         .bottom-buttons button{
@@ -234,7 +244,7 @@ $total_complaints = mysqli_num_rows($result);
         <div class="logout">
             <a href="logout.php">
                 <i class="fa-solid fa-right-from-bracket"></i>
-                Logout
+                <span>Logout</span>
             </a>
         </div>
     </aside>
@@ -276,32 +286,29 @@ $total_complaints = mysqli_num_rows($result);
                 <tbody>
                       <?php if($total_complaints > 0): ?>
                              <?php while($row = mysqli_fetch_assoc($result)): 
-                              // Determine class stylings depending on structural data status
                                     $status_clean = strtolower($row['status']);
-                                     $status_class = ($status_clean == 'resolved') ? 'resolved' : 'pending';
+                                    $status_class = ($status_clean == 'resolved') ? 'resolved' : 'pending';
                                     ?>
                                     <tr>
                                       <td>#<?php echo $row['id']; ?></td>
-                                         <td><?php echo date('Y-m-d', strtotime($row['complaint_date'])); ?></td>
-                
-                                         <td><?php echo htmlspecialchars($row['damage_type']); ?></td>
-                
-                                         <td><span class="<?php echo $status_class; ?>"><?php echo ucfirst($row['status']); ?></span></td>
+                                      <td><?php echo date('Y-m-d', strtotime($row['complaint_date'])); ?></td>
+                                      <td><?php echo htmlspecialchars($row['damage_type']); ?></td>
+                                      <td><span class="<?php echo $status_class; ?>"><?php echo ucfirst($row['status']); ?></span></td>
                                     </tr>
                              <?php endwhile; ?>
                       <?php else: ?>
-        <tr>
-            <td colspan="4" class="no-data">You haven't submitted any complaints yet.</td>
-        </tr>
-    <?php endif; ?>
-</tbody>
+                        <tr>
+                            <td colspan="4" class="no-data">You haven't submitted any complaints yet.</td>
+                        </tr>
+                    <?php endif; ?>
+                </tbody>
             </table>
 
         </div>
 
         <div class="bottom-buttons">
-            <button onclick="goHome()">Home</button>
-            <button onclick="history.back()">Back</button>
+            <button type="button" onclick="goHome()">Home</button>
+            <button type="button" onclick="history.back()">Back</button>
         </div>
 
     </main>
@@ -315,9 +322,8 @@ function searchComplaint(){
     let table = document.getElementById("complaintTable");
     let tr = table.getElementsByTagName("tr");
 
-    // Starts loop at index 1 to ignore header labels
     for(let i=1; i<tr.length; i++){
-        let td = tr[i].getElementsByTagName("td")[2]; // Column index 2 is Subject
+        let td = tr[i].getElementsByTagName("td")[2]; 
         if(td){
             let txtValue = td.textContent || td.innerText;
             tr[i].style.display = txtValue.toUpperCase().indexOf(filter) > -1 ? "" : "none";

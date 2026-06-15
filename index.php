@@ -100,7 +100,7 @@ if (isset($_POST['login'])) {
                 Sign Up
             </button>
 
-            <button class="admin-btn" onclick="window.location.href='admin_login.html'">
+            <button class="admin-btn" onclick="window.location.href='admin_login.php'">
                 Admin
             </button>
         </div>

@@ -2,9 +2,9 @@
 session_start();
 include("db_connect.php");
 
-// Session Protection Guard (Enforce admin visibility restrictions)
-if (!isset($_SESSION['user_id'])) {
-    header("Location: login.php");
+// Session Protection Guard
+if (!isset($_SESSION['user_id']) || !isset($_SESSION['role']) || $_SESSION['role'] !== 'admin') {
+    header("Location: admin_login.php"); // <--- Pastikan nama fail login admin anda betul di sini
     exit();
 }
 
@@ -296,9 +296,9 @@ $monthly_resolved = mysqli_fetch_assoc($monthly_resolved_query)['monthly_res'];
         </nav>
 
         <div class="logout">
-            <a href="logout.php">
-                <i class="fa-solid fa-arrow-right-from-bracket"></i> Logout
-            </a>        
+              <a href="admin_logout.php">
+                   <i class="fa-solid fa-arrow-right-from-bracket"></i> Logout
+              </a>        
         </div>
     </aside>
 
