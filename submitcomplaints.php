@@ -23,7 +23,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // Conditional values based on selected area
     $level = ($area === 'inside') ? mysqli_real_escape_string($conn, $_POST['level']) : null;
     $location = ($area === 'inside') ? mysqli_real_escape_string($conn, $_POST['location']) : null;
-    $location_description = ($area === 'inside') ? mysqli_real_escape_string($conn, $_POST['location_description']) : null;
+    
+    // KEMAS KINI PHP: Benarkan Simpan Description of Location untuk Inside & Outside Building
+    $location_description = ($area === 'inside' || $area === 'outside') ? mysqli_real_escape_string($conn, $_POST['location_description']) : null;
     
     $infra_category = ($area === 'outside') ? mysqli_real_escape_string($conn, $_POST['infra_category']) : null;
     $infra_subcategory = ($area === 'outside') ? mysqli_real_escape_string($conn, $_POST['infra_subcategory']) : null;
@@ -88,12 +90,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Submit Complaint</title>
+    <!-- IMPORT FONT POPPINS UNTUK INTERFACE LEBIH UP & PREMIUM -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', sans-serif;
+            font-family: 'Poppins', sans-serif;
         }
 
         body {
@@ -117,6 +121,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         h1 {
             text-align: center;
             color: #1e293b;
+            font-weight: 700;
         }
 
         .subtitle {
@@ -127,6 +132,19 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         .section {
             margin-bottom: 25px;
+            background: #f8fafc;
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 5px solid #0B5AA2;
+        }
+
+        .main-label {
+            display: block;
+            font-size: 20px;
+            font-weight: 700;
+            color: #0B5AA2;
+            margin-bottom: 12px;
+            letter-spacing: 0.3px;
         }
 
         label {
@@ -139,6 +157,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         .radio-group {
             display: flex;
             gap: 30px;
+            margin-top: 5px;
+        }
+        
+        .radio-group label {
+            font-weight: 500;
+            cursor: pointer;
         }
 
         .row {
@@ -158,6 +182,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             border: 1px solid #d1d5db;
             border-radius: 8px;
             background: #f8fafc;
+            font-size: 14px;
         }
 
         textarea {
@@ -188,6 +213,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             background: #2563eb;
             color: white;
             font-size: 18px;
+            font-weight: 600;
             cursor: pointer;
             transition: 0.3s;
         }
@@ -227,8 +253,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     <form method="POST" action="" enctype="multipart/form-data">
 
+        <!-- Complaint Area kekal premium bergaya -->
         <div class="section">
-            <label>Complaint Area</label>
+            <label class="main-label">Complaint Area</label>
             <div class="radio-group">
                 <label>
                     <input type="radio" name="area" value="inside" checked> Inside Building
@@ -258,6 +285,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             </div>
         </div>
 
+        <!-- Inside Fields Section -->
         <div id="insideFields">
             <div class="row">
                 <div class="input-group">
@@ -275,11 +303,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             </div>
             <div class="input-group">
                 <label for="locDesc">Description of Location</label>
-                <textarea id="locDesc" name="location_description" placeholder="Provide more details about the location"></textarea>
+                <textarea id="locDesc" name="location_description" placeholder="Provide more details about the inside location"></textarea>
             </div>
         </div>
 
-        <div id="outsideFields">
+        <!-- Outside Fields Section (Disembunyikan pada permulaan) -->
+        <div id="outsideFields" style="display: none;">
             <div class="row">
                 <div class="input-group">
                     <label for="infraCategorySelect">Infrastructure Category</label>
@@ -297,9 +326,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     </select>
                 </div>
             </div>
+            <!-- KEMAS KINI HTML: Tambah Description of Location untuk Outside Building -->
+            <div class="input-group">
+                <label for="locDescOutside">Description of Location</label>
+                <textarea id="locDescOutside" name="location_description" placeholder="Provide more details about the outside location" disabled></textarea>
+            </div>
         </div>
 
-        <div class="section">
+        <!-- KEMAS KINI HTML: Mengembalikan Type of Damage kepada reka bentuk asal -->
+        <div class="input-group">
             <label for="damageType">Type of Damage</label>
             <select id="damageType" name="damage_type" required>
                 <option value="">Select Type of Damage</option>
@@ -325,7 +360,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 </div>
 
 <script>
-// Keep your existing cascading dropdown mechanics exactly as they were
 const areaOptions = document.querySelectorAll('input[name="area"]');
 const insideFields = document.getElementById('insideFields');
 const outsideFields = document.getElementById('outsideFields');
@@ -336,6 +370,10 @@ const levelSelect = document.getElementById('levelSelect');
 const locationSelect = document.getElementById('locationSelect');
 const infraCategorySelect = document.getElementById('infraCategorySelect');
 const infraSubcategorySelect = document.getElementById('infraSubcategorySelect');
+
+// Element TextArea baru
+const locDescInside = document.getElementById('locDesc');
+const locDescOutside = document.getElementById('locDescOutside');
 
 areaOptions.forEach(option => {
     option.addEventListener('change', () => {
@@ -353,13 +391,20 @@ areaOptions.forEach(option => {
         infraCategorySelect.disabled = true; 
         infraSubcategorySelect.disabled = true; 
 
+        // KEMAS KINI JAVASCRIPT: Mengawal pembolehubah input mana yang aktif mengikut pilihan radio
         if (option.value === "inside" && option.checked) {
             insideFields.style.display = "block";
             if(outsideFields) outsideFields.style.display = "none";
+            
+            if(locDescInside) locDescInside.disabled = false;
+            if(locDescOutside) locDescOutside.disabled = true;
         } 
         else if (option.value === "outside" && option.checked) {
             insideFields.style.display = "none";
             if(outsideFields) outsideFields.style.display = "block";
+            
+            if(locDescInside) locDescInside.disabled = true;
+            if(locDescOutside) locDescOutside.disabled = false;
         }
     });
 });
