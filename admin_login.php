@@ -104,7 +104,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <span onclick="togglePassword()">👁</span>
             </div>
 
-            <a href="#">Forgot your password?</a>
             <button type="submit">Sign In</button>
         </form>
 

@@ -126,7 +126,9 @@ if (isset($_POST['login'])) {
                     <span onclick="togglePassword()">👁</span>
                 </div>
 
-                <a href="#">Forgot your password?</a>
+                <a href="forgot_password.php">
+                    Forgot Password?
+                </a>
 
                 <button type="submit" name="login" class="login-btn">
                     Sign In
