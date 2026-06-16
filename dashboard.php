@@ -288,10 +288,7 @@ $monthly_resolved = mysqli_fetch_assoc($monthly_resolved_query)['monthly_res'];
                 <i class="fa-solid fa-house"></i> Dashboard
             </a>
             <a href="complaints.php">
-                <i class="fa-solid fa-clipboard-list"></i> Complaints
-            </a>
-            <a href="#">
-                <i class="fa-solid fa-chart-column"></i> Reports
+                 <i class="fa-solid fa-clipboard-list"></i> Complaints
             </a>
         </nav>
 

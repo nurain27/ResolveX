@@ -11,7 +11,6 @@ $inProgress = $statusCounts['In Progress'] ?? 0;
 $resolved = $statusCounts['Resolved'] ?? 0;
 
 // 2. Fetch Complaints Data
-// Joining with the users table to get the complainant's name
 $sql = "SELECT c.id, u.name AS complainant, c.infra_category AS category, 
                c.damage_type AS subject, c.complaint_date AS date, c.status 
         FROM complaints c 
@@ -27,12 +26,12 @@ function getCssClass($type, $value) {
     if ($type === 'status') {
         if ($value === 'in progress') return 'progress';
         if ($value === 'resolved') return 'resolved';
-        return 'high'; // Default for Pending or others
+        return 'high'; 
     }
     if ($type === 'category') {
         if (strpos($value, 'internet') !== false || strpos($value, 'wifi') !== false) return 'internet';
         if (strpos($value, 'hostel') !== false) return 'hostel';
-        return 'low'; // Default generic badge
+        return 'low'; 
     }
     return '';
 }
@@ -44,19 +43,27 @@ function getCssClass($type, $value) {
     <title>ResolveX - Complaints</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
-        /* [KEEP ALL YOUR ORIGINAL CSS HERE EXACTLY AS IT WAS] */
         *{ margin:0; padding:0; box-sizing:border-box; font-family:'Poppins',sans-serif; }
         body{ background:#f5f7fb; }
         .container{ display:flex; min-height:100vh; }
-        .sidebar{ width:260px; background:#001f5c; color:white; display:flex; flex-direction:column; justify-content:space-between; }
-        .logo{ padding:20px 15px; text-align:center; }
-        .logo img{ width:210px; max-width:100%; object-fit:contain; }
-        .sidebar ul{ list-style:none; }
-        .sidebar ul li{ margin:15px; }
+        
+        /* SIDEBAR AMNDED FOR LOGO ALIGNMENT */
+        .sidebar{ width:280px; background:#001f5c; color:white; display:flex; flex-direction:column; justify-content:space-between; padding:25px; }
+        
+        /* UKURAN LOGO BARU (IKUT DASHBOARD) */
+        .logo { display: flex; align-items: center; gap: 15px; }
+        .logo img { width: 70px; object-fit: contain; }
+        .logo h2 { color: #1de9ff; font-size: 22px; }
+        .logo p { font-size: 12px; color: white; opacity: 0.9; }
+
+        .sidebar ul{ list-style:none; margin-top: 40px; }
+        .sidebar ul li{ margin-bottom:15px; }
         .sidebar ul li a{ text-decoration:none; color:white; padding:15px; display:flex; gap:12px; border-radius:12px; }
-        .sidebar ul li.active a{ background:linear-gradient(90deg,#2f67ff,#2950ff); }
-        .logout{ margin:20px; }
+        .sidebar ul li.active a{ background:#2563eb; }
+        .sidebar ul li a:hover{ background:#2563eb; }
+        .logout{ margin-top: auto; }
         .logout a{ color:white; text-decoration:none; display:flex; gap:10px; }
+        
         .main{ flex:1; padding:30px; }
         .header{ display:flex; justify-content:space-between; align-items:center; margin-bottom:30px; }
         .header h1{ color:#14213d; }
@@ -90,13 +97,24 @@ function getCssClass($type, $value) {
 <body>
 <div class="container">
     <div class="sidebar">
-        <div class="logo"><img src="robot.jpeg" alt="Robot Logo" class="robot"></div>
+         <div class="logo">
+              <img src="robot.jpeg" alt="Robot Logo" class="robot">
+              <div>
+                   <h2>ResolveX</h2>
+                   <p>Complaint Management</p>
+              </div>
+         </div>
+         
         <ul>
-            <li><a href="#"><i class="fas fa-home"></i> Dashboard</a></li>
-            <li class="active"><a href="#"><i class="fas fa-clipboard-list"></i> Complaints</a></li>
-            <li><a href="#"><i class="fas fa-chart-bar"></i> Reports</a></li>
+            <li><a href="dashboard.php"><i class="fas fa-home"></i> Dashboard</a></li>
+            <li class="active"><a href="complaints.php"><i class="fas fa-clipboard-list"></i> Complaints</a></li>
         </ul>
-        <div class="logout"><a href="#"><i class="fas fa-sign-out-alt"></i> Logout</a></div>
+        
+        <div class="logout">
+            <a href="admin_logout.php">
+                <i class="fas fa-sign-out-alt"></i> Logout
+            </a>
+        </div>
     </div>
 
     <div class="main">
